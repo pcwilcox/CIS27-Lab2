@@ -341,21 +341,45 @@ public class LinkedList<Item>
         {
             merged = false;
 
+            // Start of first sub-list is the first node each loop
             if (startFirst == null)
             {
                 startFirst = current;
             }
 
-            if (this.compareNode(current, current.back) > 0)
+            // End of first block is the last element already in order - don't assign if we've started the second block
+            if (startSecond == null && this.compareNode(current, current.back) > 0)
             {
                 endFirst = current;
             }
 
+            // Start of second block is the first element after the end of the first block - check for endFirst == null
+            // to ensure that the first block has been assigned
+            if (endFirst != null && this.compareNode(current, current.back) <= 0)
+            {
+                startSecond = current;
+            }
+
+            // End of second block is the last element in order following the start of it
+            if (startSecond != null && this.compareNode(current, current.back) > 0)
+            {
+                endSecond = current;
+            }
+
+            // If we have a start and end for two blocks we can merge them
+            if (startFirst != null && startSecond != null && endFirst != null && endSecond != null)
+            {
+                merge(startFirst, endFirst, startSecond, endSecond);
+                merged = true;
+                startFirst = null;
+                endFirst = null;
+                startSecond = null;
+                endSecond = null;
+            }
 
             // If we've reached the end of the list, go back to the beginning
             if (current.back == null)
             {
-
                 current = head;
             }
             else
@@ -366,9 +390,56 @@ public class LinkedList<Item>
         }
     }
 
-    private LinkedList merge(DoubleNode startFirst, DoubleNode endFirst, DoubleNode startSecond, DoubleNode endSecond)
+    private void merge(DoubleNode startFirst, DoubleNode endFirst, DoubleNode startSecond, DoubleNode endSecond)
     {
+        // Store references to the links outside of the two blocks
+        DoubleNode forward = startFirst.ahead;
+        DoubleNode back    = endSecond.back;
 
+        // Index pointer for each block
+        DoubleNode firstPointer  = startFirst;
+        DoubleNode secondPointer = startSecond;
+
+        // Index pointer for the merged list - when an item gets merged it'll point to this node
+        DoubleNode mergePointer = forward;
+
+        // The merge is finished when both block pointers have moved past their blocks
+        while (firstPointer != endFirst.back || secondPointer != endSecond.back)
+        {
+
+            // First check to see if either sub-list is empty, if so, the other sub-list just gets merged to the end
+            if (firstPointer == endFirst.back)
+            {
+                secondPointer.ahead = mergePointer;
+                mergePointer.back = secondPointer;
+            }
+            else if (secondPointer == endSecond.back)
+            {
+                firstPointer.ahead = mergePointer;
+                mergePointer.back = firstPointer;
+                endFirst.back = back;
+            }
+            // Since the lists aren't empty we go to compare the elements
+            else
+            {
+
+                if (compareNode(firstPointer, secondPointer) <= 0)
+                {
+                    firstPointer.ahead = mergePointer;
+                    mergePointer.back = firstPointer;
+                    firstPointer = firstPointer.back;
+                }
+                else
+                {
+                    secondPointer.ahead = mergePointer;
+                    mergePointer.back = secondPointer;
+                    secondPointer = secondPointer.back;
+                }
+
+            }
+
+            mergePointer = mergePointer.back;
+        }
     }
 
 

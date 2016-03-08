@@ -8,34 +8,23 @@ public class LinkedListTester
 {
     public static void main(String[] args)
     {
-        LinkedList list = new LinkedList();
-        System.out.println("Made a list.");
+        LinkedList<String> sort = new LinkedList<>();
+        sort.addToBack("S");
+        sort.addToBack("O");
+        sort.addToBack("R");
+        sort.addToBack("T");
+        sort.addToBack("E");
+        sort.addToBack("X");
+        sort.addToBack("A");
+        sort.addToBack("M");
+        sort.addToBack("P");
+        sort.addToBack("L");
+        sort.addToBack("E");
 
-        System.out.println("Currently the list is empty: " + list.isEmpty());
-        list.addToFront("Dick");
-        list.addToBack("Harry");
-        list.addToFront("Tom");
-        System.out.println("The list is currently " + list.toString());
+        System.out.println("Made a list: " + sort);
+        sort.mergeSort();
 
-        System.out.println("Let's get the size, it's " + list.getSize() + ".");
-
-        list.addBefore("Jane", 2);
-        System.out.println("Size is now " + list.getSize() + ".");
-
-        list.addAfter("Vivian", 3);
-        System.out.println("Size is now " + list.getSize() + ".");
-
-        System.out.println("The list is currently " + list.toString());
-        list.remove(3);
-
-        list.moveToBack(2);
-        System.out.println("The list is currently " + list.toString());
-        list.moveToFront(2);
-        System.out.println("The list is currently " + list.toString());
-        list.popFromFront();
-        list.popFromBack();
-        list.popFromFront();
-        System.out.println("The list is currently " + list.toString());
+        System.out.println("It should be sorted: " + sort);
     }
 }
 
