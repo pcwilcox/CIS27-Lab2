@@ -84,10 +84,15 @@ public class LinkedList<Item>
         {
             temp.ahead = tail;
             tail.back = temp;
+            tail = temp;
         }
-        tail = temp;
+        else
+        {
+            head = temp;
+            tail = temp;
+        }
         size++;
-        System.out.println("Added " + temp.item + " to back, size is now " + size + ".");
+        System.out.println("Added " + tail.item + " to back, size is now " + size + ".");
     }
 
     // Return the head node
@@ -339,7 +344,7 @@ public class LinkedList<Item>
 
         while (merged == true)
         {
-            merged = false;
+
 
             // Start of first sub-list is the first node each loop
             if (startFirst == null)
@@ -348,14 +353,14 @@ public class LinkedList<Item>
             }
 
             // End of first block is the last element already in order - don't assign if we've started the second block
-            if (startSecond == null && this.compareNode(current, current.back) > 0)
+            if (endFirst == null && this.compareNode(current, current.back) > 0)
             {
                 endFirst = current;
             }
 
             // Start of second block is the first element after the end of the first block - check for endFirst == null
             // to ensure that the first block has been assigned
-            if (endFirst != null && this.compareNode(current, current.back) <= 0)
+            if (endFirst != null && endFirst != current && startSecond == null)
             {
                 startSecond = current;
             }
@@ -378,9 +383,14 @@ public class LinkedList<Item>
             }
 
             // If we've reached the end of the list, go back to the beginning
-            if (current.back == null)
+            if (current == tail)
             {
+                if (endFirst == tail)
+                {
+                    merged = false;
+                }
                 current = head;
+
             }
             else
             {
@@ -426,19 +436,38 @@ public class LinkedList<Item>
                 if (compareNode(firstPointer, secondPointer) <= 0)
                 {
                     firstPointer.ahead = mergePointer;
-                    mergePointer.back = firstPointer;
+                    if (mergePointer != null)
+                    {
+                        mergePointer.back = firstPointer;
+
+
+                    }
+                    mergePointer = firstPointer;
                     firstPointer = firstPointer.back;
+
                 }
                 else
                 {
                     secondPointer.ahead = mergePointer;
-                    mergePointer.back = secondPointer;
+                    if (mergePointer != null)
+                    {
+                        mergePointer.back = secondPointer;
+                    }
+                    mergePointer = secondPointer;
                     secondPointer = secondPointer.back;
                 }
 
             }
 
-            mergePointer = mergePointer.back;
+
+        }
+        while (head.ahead != null)
+        {
+            head = head.ahead;
+        }
+        while (tail.back != null)
+        {
+            tail = tail.back;
         }
     }
 
