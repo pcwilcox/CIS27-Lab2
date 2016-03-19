@@ -322,7 +322,7 @@ public class LinkedList<Item>
         }
     }
 
-    // Natural mergesort method, will call helper methods to sort the list
+    // Natural linkedList method, will call helper methods to sort the list
     public void mergeSort()
     {
         // Index that moves through the list
