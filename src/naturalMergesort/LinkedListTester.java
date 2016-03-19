@@ -4,7 +4,7 @@ package naturalMergesort;
 /**
  * Created by Pete Wilcox on 2/7/2016.
  */
-public class LinkedListTester
+/*public class LinkedListTester
 {
     public static void main(String[] args)
     {

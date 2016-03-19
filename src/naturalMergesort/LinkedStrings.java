@@ -4,7 +4,7 @@ package naturalMergesort;
  * Created by Pete Wilcox on 3/7/2016.
  * petercwilcox@gmail.com
  */
-public class LinkedStrings
+/*public class LinkedStrings
 {
     private DoubleNode head;
     private DoubleNode tail;
@@ -38,3 +38,4 @@ public class LinkedStrings
         size++;
     }
 }
+*/

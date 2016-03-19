@@ -4,7 +4,7 @@ package naturalMergesort;
  * Created by Pete Wilcox on 2/6/2016.
  * petercwilcox@gmail.com
  */
-public class LinkedList<Item>
+/*public class LinkedList<Item>
 {
 
     private DoubleNode head;
@@ -389,3 +389,4 @@ public class LinkedList<Item>
         }
     }
 }
+*/
