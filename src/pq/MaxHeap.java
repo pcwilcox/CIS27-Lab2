@@ -47,8 +47,9 @@ public class MaxHeap<Item extends Comparable>
     public void insert(Item i)
     {
         heap.add(i);
-        swim(size);
         size++;
+        swim(size);
+
     }
 
     public Item remove()
