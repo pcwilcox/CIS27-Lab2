@@ -90,20 +90,78 @@ public class LinkedList<Item>
 
     public void sort()
     {
-        while (true)
+        boolean sorted  = false;
+        Node    current = head;
+        Node    newHead = new Node();
+        newHead.next = current;
+        while (sorted == false)
         {
-            Node endFirst = getEnd(head);
-            if (endFirst.next == null)
+            Node endFirst = getEnd(current);
+            if (current == head && endFirst.next == null)
             {
-                return;
+                sorted = true;
             }
-            Node startSecond = endFirst.next;
-            merge(startSecond);
+            else
+            {
+                Node startSecond = endFirst.next;
+                current = merge(current, startSecond);
+            }
+            if (current.next != null)
+            {
+                current = current.next;
+            }
+            else
+            {
+                head = newHead.next;
+                current = newHead.next;
+            }
         }
     }
 
-    private void merge(Node n)
+    private Node merge(Node n, Node m)
     {
-        
+        Node newHead       = new Node();
+        Node current       = newHead;
+        Node firstPointer  = n;
+        Node secondPointer = m;
+        Node endSecond     = getEnd(m);
+
+        while (firstPointer != m && secondPointer != endSecond.next)
+        {
+            if (firstPointer.compareTo(secondPointer) < 1)
+            {
+                current.next = firstPointer;
+                firstPointer = firstPointer.next;
+            }
+            else
+            {
+                current.next = secondPointer;
+                secondPointer = secondPointer.next;
+            }
+            current = current.next;
+        }
+
+        if (firstPointer == m)
+        {
+            current.next = secondPointer;
+        }
+        else
+        {
+            current.next = firstPointer;
+        }
+
+        return newHead.next;
+    }
+
+    public String toString()
+    {
+        Node   current = head;
+        String out     = "";
+        while (current != null)
+        {
+            out = out + " " + current.item;
+            current = current.next;
+        }
+        return out;
     }
 }
