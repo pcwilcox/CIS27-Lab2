@@ -9,16 +9,16 @@ public class MaxHeap
     private int[] heap;
     private int   size;
 
-    private void sink(int i)
+    private void sink(int i, int n)
     {
-        while (3 * i - 1 < size)
+        while (3 * i - 1 < n)
         {
             int j = 3 * i - 1;
-            if (j + 2 < size)
+            if (j + 2 < n)
             {
                 j = greatest(j, j + 1, j + 2);
             }
-            else if (j + 1 < size && less(j, j + 1))
+            else if (j + 1 < n && less(j, j + 1))
             {
                 j++;
             }
@@ -63,7 +63,7 @@ public class MaxHeap
     {
         exch(1, size);
         int temp = heap[size--];
-        sink(1);
+        sink(1, size);
         if (size <= heap.length / 2)
         {
             resize();
@@ -110,7 +110,7 @@ public class MaxHeap
     {
         String output = "";
 
-        for (int i = 1; i <= heap.length - 1; i++)
+        for (int i = 1; i <= size; i++)
         {
             output = output + heap[i] + " ";
         }
@@ -129,10 +129,11 @@ public class MaxHeap
 
     public void heapSort()
     {
-        while (size > 1)
+        int n = size;
+        while (n > 1)
         {
-            exch(1, size--);
-            sink(1);
+            exch(1, n);
+            sink(1, n--);
         }
     }
 }
