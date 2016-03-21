@@ -11,7 +11,7 @@ public class Heapsort
     public static void main(String[] args) {
         MaxHeap test = new MaxHeap();
         Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 27; i++) {
             int j = rand.nextInt(100);
             System.out.println("Adding " + j);
             test.insert(j);

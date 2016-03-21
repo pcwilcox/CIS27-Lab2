@@ -14,17 +14,15 @@ public class MaxHeap
         while (3 * i - 1 < size)
         {
             int j = 3 * i - 1;
-            if (j + 1 < size)
+            if (j + 2 < size)
             {
-                if (j + 2 < size && less(j + 1, j + 2))
-                {
-                    j += 2;
-                }
-                else if (less(j, j + 1))
-                {
-                    j++;
-                }
+                j = greatest(j, j + 1, j + 2);
             }
+            else if (j + 1 < size && less(j, j + 1))
+            {
+                j++;
+            }
+
             if (!less(i, j))
             {
                 break;
@@ -76,6 +74,19 @@ public class MaxHeap
     private boolean less(int a, int b)
     {
         return heap[a] < heap[b];
+    }
+
+    private int greatest(int a, int b, int c)
+    {
+        if (heap[a] >= heap[b] && heap[a] >= heap[c])
+        {
+            return a;
+        }
+        if (heap[b] >= heap[a] && heap[b] >= heap[c])
+        {
+            return b;
+        }
+        return c;
     }
 
     private void exch(int a, int b)
