@@ -6,14 +6,18 @@ package heapsort;
  */
 public class MaxHeap
 {
+    // Max-value heap set up with 3 child branches per leaf
     private int[] heap;
     private int   size;
 
+    // Sink an element to its proper place in the heap
     private void sink(int i, int n)
     {
         while (3 * i - 1 < n)
         {
             int j = 3 * i - 1;
+
+            // These two blocks set j = the largest child branch
             if (j + 2 < n)
             {
                 j = greatest(j, j + 1, j + 2);
@@ -32,6 +36,7 @@ public class MaxHeap
         }
     }
 
+    // Swim an element upwards to its correct place in the heap
     private void swim(int i)
     {
         while (i > 1 && less((i + 1) / 3, i))
@@ -47,6 +52,7 @@ public class MaxHeap
         size = 0;
     }
 
+    // Adds an element to the end of the array, then swims it up. Resize() if necessary
     public void insert(int i)
     {
         if (++size == heap.length)
@@ -59,6 +65,7 @@ public class MaxHeap
 
     }
 
+    // Swaps the first and last elements, removes the last one, then sinks the first one
     public int remove()
     {
         exch(1, size);
@@ -71,11 +78,13 @@ public class MaxHeap
         return temp;
     }
 
+    // Compares two elements in the heap
     private boolean less(int a, int b)
     {
         return heap[a] < heap[b];
     }
 
+    // Returns the largest of the three elements in the heap - helps the sink() function a lot
     private int greatest(int a, int b, int c)
     {
         if (heap[a] >= heap[b] && heap[a] >= heap[c])
@@ -89,6 +98,7 @@ public class MaxHeap
         return c;
     }
 
+    // Swap two elements in the heap
     private void exch(int a, int b)
     {
         int temp = heap[a];
@@ -106,6 +116,7 @@ public class MaxHeap
         return size == 0;
     }
 
+    // Simple helper to concatenate every element into a string
     public String toString()
     {
         String output = "";
@@ -117,6 +128,7 @@ public class MaxHeap
         return output;
     }
 
+    // Helper function to resize the array as necessary
     private void resize()
     {
         int[] newHeap = new int[2 * size];
@@ -127,6 +139,7 @@ public class MaxHeap
         heap = newHeap;
     }
 
+    // Sort it!
     public void heapSort()
     {
         int n = size;
