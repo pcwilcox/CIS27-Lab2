@@ -6,6 +6,7 @@ package merge;
  */
 public class LinkedList<Item>
 {
+    // Basic linked list used to show natural mergesort
     private Node head;
     private int  size;
 
@@ -15,6 +16,7 @@ public class LinkedList<Item>
         Node next;
         Item item;
 
+        // Inner class needs to implement compareTo or explicitly be a comparable type like int
         public int compareTo(Node n)
         {
             if (n == null)
@@ -50,6 +52,7 @@ public class LinkedList<Item>
         size = 1;
     }
 
+    // Add item to front
     public void push(Item i)
     {
         Node temp = new Node();
@@ -59,6 +62,7 @@ public class LinkedList<Item>
         size++;
     }
 
+    // Remove item from front
     public Item pop()
     {
         Node temp = head;
@@ -66,7 +70,6 @@ public class LinkedList<Item>
         size--;
         return temp.item;
     }
-
 
     public boolean isEmpty()
     {
@@ -78,81 +81,111 @@ public class LinkedList<Item>
         return size;
     }
 
-    private Node getEnd(Node n)
+    // Calls the recursive sort() method
+    public void mergeSort()
     {
-        Node end = n;
-        while (end.next != null && end.compareTo(end.next) < 1)
-        {
-            end = end.next;
-        }
-        return end;
+        head = sort(head);
     }
 
-    public void sort()
+    // Recursively: find first natural set, second natural set, merge(merge(first, second), remainder)
+    private Node sort(Node n)
     {
-        boolean sorted  = false;
-        Node    current = head;
-        Node    newHead = new Node();
-        newHead.next = current;
-        while (sorted == false)
+        // Single node in list, return it - this also covers if n is null
+        if (n.next == null)
         {
-            Node endFirst = getEnd(current);
-            if (current == head && endFirst.next == null)
-            {
-                sorted = true;
-            }
-            else
-            {
-                Node startSecond = endFirst.next;
-                current = merge(current, startSecond);
-            }
-            if (current.next != null)
-            {
-                current = current.next;
-            }
-            else
-            {
-                head = newHead.next;
-                current = newHead.next;
-            }
+            return n;
+        }
+
+        Node first = n;
+        n = getEnd(n);
+
+        Node second = n.next;
+
+        // This catches odd numbers of natural lists - if there's only a first and no second it'll stop here
+        if (second == null)
+        {
+            return first;
+        }
+
+        n.next = null;
+
+        if (second.next != null)
+        {
+            n = getEnd(second);
+
+            // Save the tail
+            Node tail = n.next;
+
+            n.next = null;
+
+            // Merge the first two, then merge that with whatever's left
+            return merge(merge(first, second), sort(tail));
+        }
+        else
+        {
+            // If there's no tail, just merge the two
+            return merge(first, second);
         }
     }
 
-    private Node merge(Node n, Node m)
+    private Node merge(Node first, Node second)
     {
-        Node newHead       = new Node();
-        Node current       = newHead;
-        Node firstPointer  = n;
-        Node secondPointer = m;
-        Node endSecond     = getEnd(m);
+        // Make a dummy head, we return the .next reference
+        Node newHead = new Node();
 
-        while (firstPointer != m && secondPointer != endSecond.next)
+        // Iterator for merged list
+        Node current = newHead;
+
+        // Loop continues while the two lists still have elements
+        while (first != null && second != null)
         {
-            if (firstPointer.compareTo(secondPointer) < 1)
+            // <1 so that it remains stable
+            if (first.compareTo(second) < 1)
             {
-                current.next = firstPointer;
-                firstPointer = firstPointer.next;
+                current.next = first;
+                first = first.next;
             }
             else
             {
-                current.next = secondPointer;
-                secondPointer = secondPointer.next;
+                current.next = second;
+                second = second.next;
             }
             current = current.next;
         }
 
-        if (firstPointer == m)
+        // Once one sublist is empty, attach the remainder of the other
+        if (first == null)
         {
-            current.next = secondPointer;
+            current.next = second;
         }
         else
         {
-            current.next = firstPointer;
+            current.next = first;
         }
 
+        // Return the merged list
         return newHead.next;
     }
 
+    // This method finds the end of a naturally-ordered list
+    private Node getEnd(Node n)
+    {
+        if (n == null)
+        {
+            return null;
+        }
+
+        Node end = n;
+
+        while (end.next != null && end.compareTo(end.next) < 1)
+        {
+            end = end.next;
+        }
+
+        return end;
+    }
+
+    // Simple method to concatenate every element to a string
     public String toString()
     {
         Node   current = head;
