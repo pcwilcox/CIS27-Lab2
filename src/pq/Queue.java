@@ -6,6 +6,7 @@ package pq;
  */
 public class Queue<Item>
 {
+    // Super simple FIFO queue
     private Node head;
     private Node tail;
     private int  size;

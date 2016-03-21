@@ -8,9 +8,11 @@ import java.util.ArrayList;
  */
 public class MinHeap
 {
+    // Minimum-ordered priority queue
     private int[] heap;
     private int   size;
 
+    // Sink an element to its proper place
     private void sink(int i)
     {
         while (2 * i < size)
@@ -29,6 +31,7 @@ public class MinHeap
         }
     }
 
+    // Swim an element upwards
     private void swim(int i)
     {
         while (i > 1 && less(i, i / 2))
@@ -44,6 +47,7 @@ public class MinHeap
         size = 0;
     }
 
+    // Add an element, resizing if necessary
     public void insert(int i)
     {
         if (++size == heap.length)
@@ -56,6 +60,7 @@ public class MinHeap
 
     }
 
+    // Swap the first and last elements, remove the last, sink the first, resize if necessary
     public int remove()
     {
         exch(1, size);
@@ -101,6 +106,7 @@ public class MinHeap
         return output;
     }
 
+    // Helper to resize as necessary
     private void resize()
     {
         int[] newHeap = new int[2 * size];
