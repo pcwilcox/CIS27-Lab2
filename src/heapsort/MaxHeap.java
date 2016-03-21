@@ -11,17 +11,21 @@ public class MaxHeap
 
     private void sink(int i)
     {
-        while (3 * i < size)
+        while (3 * i - 1 < size)
         {
-            int j = 3 * i;
-            if (j < size && less(j - 1, j))
+            int j = 3 * i - 1;
+            if (j + 1 < size)
             {
-                if (j < size && less(j, j + 1)) {
+                if (j + 2 < size && less(j + 1, j + 2))
+                {
+                    j += 2;
+                }
+                else if (less(j, j + 1))
+                {
                     j++;
                 }
-                j++;
             }
-            if (!less(j, i))
+            if (!less(i, j))
             {
                 break;
             }
@@ -32,10 +36,10 @@ public class MaxHeap
 
     private void swim(int i)
     {
-        while (i > 1 && less(i / 3, i))
+        while (i > 1 && less((i + 1) / 3, i))
         {
-            exch(i / 3, i);
-            i /= 3;
+            exch((i + 1) / 3, i);
+            i = (i + 1) / 3;
         }
     }
 
@@ -95,7 +99,7 @@ public class MaxHeap
     {
         String output = "";
 
-        for (int i = 1; i <= size; i++)
+        for (int i = 1; i <= heap.length - 1; i++)
         {
             output = output + heap[i] + " ";
         }
@@ -112,8 +116,10 @@ public class MaxHeap
         heap = newHeap;
     }
 
-    public void heapSort() {
-        while (size > 1) {
+    public void heapSort()
+    {
+        while (size > 1)
+        {
             exch(1, size--);
             sink(1);
         }

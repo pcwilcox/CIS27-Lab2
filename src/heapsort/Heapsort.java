@@ -12,7 +12,7 @@ public class Heapsort
         MaxHeap test = new MaxHeap();
         Random rand = new Random();
         for (int i = 0; i < 100; i++) {
-            int j = rand.nextInt(500);
+            int j = rand.nextInt(100);
             System.out.println("Adding " + j);
             test.insert(j);
         }
