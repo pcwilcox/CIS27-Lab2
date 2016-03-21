@@ -24,14 +24,14 @@ public class Quicksort
         {
             System.out.println("Testing " + n + " integers, " + i + " cutoff to insertion sort.");
             System.out.println("First element pivot: ");
-            int[] arr1      = getArray(n);
-            long  startTime = System.nanoTime();
+            double[] arr1      = getArray(n);
+            long     startTime = System.nanoTime();
             sort(arr1, 0, n - 1, i, -1);
             long elapsed = System.nanoTime() - startTime;
             System.out.println("Elapsed time: " + elapsed);
             startTime = System.nanoTime();
             System.out.println("Using getPivot(): ");
-            int[] arr2 = getArray(n);
+            double[] arr2 = getArray(n);
             startTime = System.nanoTime();
             sort(arr2, 0, n - 1, i, 1);
             elapsed = System.nanoTime() - startTime;
@@ -39,19 +39,19 @@ public class Quicksort
         }
     }
 
-    public static int[] getArray(int n)
+    public static double[] getArray(int n)
     {
-        Random rand = new Random();
-        int[]  arr  = new int[n];
+        Random   rand = new Random();
+        double[] arr  = new double[n];
         for (int i = 0; i < n; i++)
         {
-            arr[i] = rand.nextInt(n);
+            arr[i] = rand.nextDouble();
         }
 
         return arr;
     }
 
-    public static int partition(int[] a, int lo, int hi)
+    public static int partition(double[] a, int lo, int hi)
     {
         int i = lo;
         int j = hi + 1;
@@ -81,7 +81,7 @@ public class Quicksort
         return j;
     }
 
-    public static void sort(int[] a, int lo, int hi, int cutoff, int pivot)
+    public static void sort(double[] a, int lo, int hi, int cutoff, int pivot)
     {
         if (lo >= hi)
         {
@@ -103,59 +103,54 @@ public class Quicksort
         }
     }
 
-    public static void getPivot(int[] a, int lo, int hi)
+    public static void getPivot(double[] a, int lo, int hi)
     {
-        int i = a[lo];
-        int j = a[hi];
-        int k = a[(hi + lo) / 2];
-        if (i <= j)
+        if (a[lo] <= a[hi])
         {
-            if (j <= k)
+            if (a[hi] <= a[(hi + lo) / 2])
             {
-                exch(a, a[lo], a[hi]);
+                exch(a, lo, hi);
                 return;
             }
             else
             {
-                exch(a, a[lo], a[(hi + lo) / 2]);
+                exch(a, lo, (hi + lo) / 2);
                 return;
             }
         }
         else
         {
-            if (i <= k)
+            if (a[lo] <= a[(hi + lo) / 2])
             {
                 return;
             }
             else
             {
-                exch(a, a[lo], a[(hi + lo) / 2]);
+                exch(a, lo, (hi + lo) / 2);
                 return;
             }
         }
     }
 
-    public static void insertionSort(int[] a, int lo, int hi)
+    public static void insertionSort(double[] a, int lo, int hi)
     {
         for (int i = lo + 1; i < hi - lo; i++)
         {
             for (int j = i; j > lo && a[j] > a[j - 1]; j--)
             {
-                int temp = a[j];
-                a[j] = a[j - 1];
-                a[j - 1] = temp;
+                exch(a, j, j - 1);
             }
         }
     }
 
-    public static boolean less(int a, int b)
+    public static boolean less(double a, double b)
     {
         return a < b;
     }
 
-    public static void exch(int[] a, int i, int j)
+    public static void exch(double[] a, int i, int j)
     {
-        int temp = a[i];
+        double temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
