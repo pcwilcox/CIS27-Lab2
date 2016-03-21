@@ -24,17 +24,17 @@ public class Quicksort
         {
             System.out.println("Testing " + n + " integers, " + i + " cutoff to insertion sort.");
             System.out.println("First element pivot: ");
-            long  startTime = System.currentTimeMillis();
             int[] arr1      = getArray(n);
+            long  startTime = System.nanoTime();
             sort(arr1, 0, n - 1, i, -1);
-            long elapsed = System.currentTimeMillis() - startTime;
+            long elapsed = System.nanoTime() - startTime;
             System.out.println("Elapsed time: " + elapsed);
-
-            startTime = System.currentTimeMillis();
+            startTime = System.nanoTime();
             System.out.println("Using getPivot(): ");
             int[] arr2 = getArray(n);
+            startTime = System.nanoTime();
             sort(arr2, 0, n - 1, i, 1);
-            elapsed = System.currentTimeMillis() - startTime;
+            elapsed = System.nanoTime() - startTime;
             System.out.println("Elapsed time: " + elapsed);
         }
     }
