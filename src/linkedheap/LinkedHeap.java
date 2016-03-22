@@ -17,7 +17,7 @@ public class LinkedHeap<Item>
         Node left;
         Node right;
         Item item;
-        int size;
+        int  size;
 
         public String toString()
         {
@@ -61,16 +61,27 @@ public class LinkedHeap<Item>
 
     public void insert(Item i)
     {
-        Node temp = newTail(tail);
-        temp.item = i;
-
+        if (head == null)
+        {
+            head = new Node();
+            tail = head;
+        }
+        else
+        {
+            tail = newTail();
+        }
+        tail.item = i;
+        tail.size = 0;
+        grow(tail);
+        swim(tail);
+        size++;
     }
 
     public Item remove()
     {
         Node temp = head;
-        head = tail;
-        tail = temp;
+        exch(head, tail);
+        shrink(tail);
         if (temp.root.right == temp)
         {
             temp.root.right = null;
@@ -79,36 +90,30 @@ public class LinkedHeap<Item>
         {
             temp.root.left = null;
         }
+
         tail = findTail();
+        sink(head);
         size--;
         return temp.item;
-
     }
 
     private void sink(Node n)
     {
-        while (true)
+        while (n.left != null && n.right != null)
         {
-            if (n.left == null && n.right == null)
+            Node next = greatest(n.left, n.right);
+            if (less(n, next))
+            {
+                exch(n, next);
+            }
+            else
             {
                 break;
             }
-            if (n.left != null && n.right != null)
-            {
-                Node m = greatest(n.left, n.right);
-                if (less(n, m))
-                {
-                    exch(n, m);
-                }
-            }
-            else if (n.left != null)
-            {
-                if (less(n, n.left))
-                {
-
-                    exch(n, n.left);
-                }
-            }
+        }
+        if (less(n, n.left))
+        {
+            exch(n, n.left);
         }
     }
 
@@ -120,8 +125,77 @@ public class LinkedHeap<Item>
         }
     }
 
-    private Node newTail(Node n)
+    private void shrink(Node n)
     {
+        while (n != null)
+        {
+            n.size--;
+            n = n.root;
+        }
+    }
+
+    private void grow(Node n)
+    {
+        while (n != null)
+        {
+            n.size++;
+            n = n.root;
+        }
+    }
+
+    private Node newTail()
+    {
+        Node current = head;
+        while (current.right != null)
+        {
+            current = smaller(current);
+        }
+        Node newTail = new Node();
+        newTail.root = current;
+        newTail.size = 0;
+        grow(newTail);
+
+        if (current.left == null)
+        {
+            current.left = newTail;
+        }
+        else
+        {
+            current.right = newTail;
+        }
+        return newTail;
+
+    }
+
+    // Returns last inserted node
+    private Node findTail()
+    {
+        Node current = head;
+        while (true)
+        {
+            if (current.left == null)
+            {
+                return current;
+            }
+            if (current.right == null)
+            {
+                return current.left;
+            }
+            current = smaller(current);
+        }
+    }
+
+    private Node smaller(Node n)
+    {
+        if (n.right == null)
+        {
+            return n.left;
+        }
+        if (n.right.size < n.left.size)
+        {
+            return n.right;
+        }
+        return n.left;
     }
 
     private Node greatest(Node n, Node m)
@@ -156,12 +230,15 @@ public class LinkedHeap<Item>
         temp.root = n.root;
         temp.left = n.left;
         temp.right = n.right;
+        temp.size = n.size;
         n.root = m.root;
         n.left = m.left;
         n.right = m.right;
+        n.size = m.size;
         m.root = temp.root;
         m.left = temp.left;
         m.right = temp.right;
+        m.size = temp.size;
     }
 
     private boolean less(Node n, Node m)
