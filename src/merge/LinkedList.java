@@ -16,7 +16,8 @@ public class LinkedList<Item>
         Node next;
         Item item;
 
-        // Inner class needs to implement compareTo or explicitly be a comparable type like int
+        // Inner class needs to implement compareTo
+        // or explicitly be a comparable type like int
         public int compareTo(Node n)
         {
             if (n == null)
@@ -26,7 +27,8 @@ public class LinkedList<Item>
             }
             else
             {
-                if (item instanceof Comparable && n.item instanceof Comparable)
+                if (item instanceof Comparable &&
+                    n.item instanceof Comparable)
                 {
                     Comparable i = (Comparable) item;
                     Comparable o = (Comparable) n.item;
@@ -87,10 +89,12 @@ public class LinkedList<Item>
         head = sort(head);
     }
 
-    // Recursively: find first natural set, second natural set, merge(merge(first, second), remainder)
+    // Recursively: find first natural set, second
+    // natural set, merge(merge(first, second), remainder)
     private Node sort(Node n)
     {
-        // Single node in list, return it - this also covers if n is null
+        // Single node in list, return it
+        // this also covers if n is null
         if (n.next == null)
         {
             return n;
@@ -101,7 +105,8 @@ public class LinkedList<Item>
 
         Node second = n.next;
 
-        // This catches odd numbers of natural lists - if there's only a first and no second it'll stop here
+        // This catches odd numbers of natural lists
+        // if there's only a first and no second it'll stop here
         if (second == null)
         {
             return first;
@@ -118,7 +123,8 @@ public class LinkedList<Item>
 
             n.next = null;
 
-            // Merge the first two, then merge that with whatever's left
+            // Merge the first two,
+            // then merge that with whatever's left
             return merge(merge(first, second), sort(tail));
         }
         else
@@ -153,7 +159,8 @@ public class LinkedList<Item>
             current = current.next;
         }
 
-        // Once one sublist is empty, attach the remainder of the other
+        // Once one sublist is empty, attach
+        // the remainder of the other list
         if (first == null)
         {
             current.next = second;
@@ -177,7 +184,8 @@ public class LinkedList<Item>
 
         Node end = n;
 
-        while (end.next != null && end.compareTo(end.next) < 1)
+        while (end.next != null &&
+               end.compareTo(end.next) < 1)
         {
             end = end.next;
         }

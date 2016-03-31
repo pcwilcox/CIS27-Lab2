@@ -12,9 +12,12 @@ public class PQTester
     public static void main(String[] args)
     {
         Random rand = new Random();
+        double turnaround = 0;
+        double average = 0;
+        int jobCount = 0;
 
-        System.out.println("Program to test priority queue systems.");
-        System.out.println("100 random jobs: ");
+        // Array with 100 random jobs in it for testing
+
         int[] jobs = new int[100];
         for (int i = 0; i < 100; i++)
         {
@@ -22,7 +25,7 @@ public class PQTester
             jobs[i] = j;
             System.out.print(j + " ");
         }
-        System.out.println();
+
         System.out.println("First test - First-In-First-Out queue:");
         Queue<Integer> jobQueue = new Queue<>();
         for (int i = 0; i < 100; i++)
@@ -30,17 +33,18 @@ public class PQTester
             jobQueue.enqueue(jobs[i]);
         }
 
-        int lapsed   = 0;
-        int jobCount = 0;
+
         while (!jobQueue.isEmpty())
         {
             int i = jobQueue.dequeue();
-            System.out.println("Job #" + ++jobCount + ": " +
-                               " Waiting time: " + lapsed +
-                               " Processing Time: " + i);
-            lapsed += i;
+            turnaround += i;
+            average += turnaround;
+
         }
-        lapsed = 0;
+        average /= 100;
+        System.out.println("Average turnaround: " + average);
+        turnaround = 0;
+        average = 0;
         jobCount = 0;
 
         MinHeap jobHeap = new MinHeap();
@@ -52,78 +56,80 @@ public class PQTester
         while (!jobHeap.isEmpty())
         {
             int i = jobHeap.remove();
-            System.out.println("Job #" + ++jobCount + ": " +
-                               " Waiting time: " + lapsed +
-                               " Processing Time: " + i);
-            lapsed += i;
+            turnaround += i;
+            average += turnaround;
         }
 
-        lapsed = 0;
-        jobCount = 0;
+        average /= 100;
+
+        System.out.println("Average turnaround: " + average);
+        turnaround = 0;
+        average = 0;
         System.out.println("Third Test - Round Robin:");
 
-        // This one uses an arraylist with a simple loop on it
-        ArrayList<Integer> jobList = new ArrayList<>();
-        for (int i = 0; i < 100; i++)
+        // This one uses an arraylist with a simple loop on it.
+        // We'll run this test for time slices from 5-50
+        for (int j = 5; j < 55; j += 5)
         {
-            jobList.add(jobs[i]);
-        }
+            System.out.println("J: " + j);
+            ArrayList<Integer> jobList = new ArrayList<>();
+            for (int i = 0; i < 100; i++)
+            {
+                jobList.add(jobs[i]);
+            }
 
-        while (!jobList.isEmpty())
-        {
-            int i = jobList.remove(0);
-            System.out.println("Job #" + ++jobCount + ": " +
-                               " Waiting time: " + lapsed +
-                               " Processing Time: " + i);
-            lapsed += i;
-            i -= 20;
-            if (jobCount >= 100)
+            while (!jobList.isEmpty())
             {
-                jobCount = 0;
+                int i = jobList.remove(0);
+
+                if (i > j)
+                {
+                    turnaround += i - j;
+                    average += turnaround;
+                    i -= j;
+                    jobList.add(i);
+                }
+                else
+                {
+                    turnaround += i;
+                    average += turnaround;
+                }
             }
-            if (i > 0)
-            {
-                jobList.add(i);
-            }
+            average /= 100;
+            System.out.println("Average turnaround: " + average);
+            average = 0;
+            turnaround = 0;
         }
     }
 }
 
 /* Program output: (edited formatting a bit)
-Program to test priority queue systems.
-100 random jobs:
-89 47 27 75 32 20 32 100 85 18 8 23 20 39 100 32 36 18
-44 61 37 50 49 35 39 65 29 13 93 83 54 66 4 86 71 61 90
-90 94 37 47 85 75 54 37 99 99 2 96 74 56 58 13 12 71 31
-29 76 74 71 99 71 55 80 73 6 26 31 82 69 57 13 16 91 79
-37 14 56 85 37 13 62 12 55 82 29 76 2 86 23 16 76 94 65
-44 13 56 87 2 0
+80 28 63 41 73 76 38 69 57 3 80 6 22 55 33
+78 0 72 24 46 83 58 6 58 60 44 52 51 91 95
+89 81 48 30 27 97 49 31 57 50 55 2 90 47
+78 26 92 17 57 86 95 54 92 93 42 20 2 50
+59 92 29 30 66 65 82 62 3 5 91 77 98 75 95
+15 1 100 62 14 50 53 1 23 3 27 89 63 63 74
+15 41 9 5 27 52 93 78 49 90 17 81
 
 First test - First-In-First-Out queue:
-Job #1:  Waiting time: 0 Processing Time: 89
-// I'm omitting the jobs in the middle here
-Job #100:  Waiting time: 5181 Processing Time: 0
+Average turnaround: 2665.42
 
 Second Test - Shortest-Job-First:
-Job #1:  Waiting time: 0 Processing Time: 0
-// Same here
-Job #100:  Waiting time: 5081 Processing Time: 100
+Average turnaround: 1782.83
 
 Third Test - Round Robin:
-Job #1:  Waiting time: 0 Processing Time: 89
-Job #100:  Waiting time: 5181 Processing Time: 0
-// First time through
+J: 5  Average turnaround: 227351.14
+J: 10 Average turnaround: 57044.19
+J: 15 Average turnaround: 25801.89
+J: 20 Average turnaround: 14341.98
+J: 25 Average turnaround: 9392.02
+J: 30 Average turnaround: 6888.61
+J: 35 Average turnaround: 5154.78
+J: 40 Average turnaround: 4216.59
+J: 45 Average turnaround: 3523.72
+J: 50 Average turnaround: 2966.5
 
-Job #1:  Waiting time: 5181 Processing Time: 69
-Job #100:  Waiting time: 9206 Processing Time: 54
-// Second!
-
-Job #1:  Waiting time: 9260 Processing Time: 7
-Job #100:  Waiting time: 11609 Processing Time: 6
-// Third!
-
-Job #1:  Waiting time: 11615 Processing Time: 14
-Job #2:  Waiting time: 11629 Processing Time: 7
-// Finally done
-
+Unsurprisingly, the SJF goes fastest and the
+higher the time-slice, the faster the round robin goes.
  */

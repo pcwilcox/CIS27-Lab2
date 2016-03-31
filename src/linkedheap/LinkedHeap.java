@@ -19,20 +19,34 @@ public class LinkedHeap<Item>
         Item item;
         int  size;
 
+        // I wasn't sure how to go about displaying the finalized heap
         public String toString()
         {
             if (left == null)
             {
-                return item.toString();
+                return this.toStringHelper();
             }
             else if (right == null)
             {
-                return item.toString() + ", " + left.toString();
+                return this.toStringHelper() + ", " + left.toString();
             }
             else
             {
-                return item.toString() + ", " + left.toString() + ", " + right.toString();
+                return this.toStringHelper() + ", " + left.toString() + ", " + right.toString();
             }
+        }
+
+        // So I made this helper to just display the info of each node
+        private String toStringHelper() {
+            String output, root;
+            if (this.root == null) {
+                root = "null";
+            } else {
+                root = this.root.item.toString();
+            }
+
+            output = "[Item: " + this.item.toString() + ", Size: " + this.size + ", Root: " + root + "]";
+            return output;
         }
 
         public int compareTo(Node other)
@@ -59,26 +73,34 @@ public class LinkedHeap<Item>
         size = 0;
     }
 
+    // Insert an item.
     public void insert(Item i)
     {
         if (head == null)
         {
+            // If the list is empty we save some time
             head = new Node();
+            head.size = 1;
             tail = head;
         }
         else
         {
-            tail = newTail();
+            // Otherwise we need to create a new tail
+            tail = newTail(head);
         }
+
+        // Then insert the key into the tail
         tail.item = i;
-        tail.size = 0;
-        grow(tail);
+
+        // And swim it into position
         swim(tail);
         size++;
     }
 
+    // Remove the root item
     public Item remove()
     {
+        // Swap the
         Node temp = head;
         exch(head, tail);
         shrink(tail);
@@ -91,7 +113,7 @@ public class LinkedHeap<Item>
             temp.root.left = null;
         }
 
-        tail = findTail();
+        tail = findTail(head);
         sink(head);
         size--;
         return temp.item;
@@ -127,61 +149,64 @@ public class LinkedHeap<Item>
 
     private void shrink(Node n)
     {
-        while (n != null)
+        n.size--;
+        if (n.root != null)
         {
-            n.size--;
-            n = n.root;
+            shrink(n.root);
         }
     }
 
     private void grow(Node n)
     {
-        while (n != null)
+        n.size++;
+        if (n.root != null)
         {
-            n.size++;
-            n = n.root;
+            grow(n.root);
         }
     }
 
-    private Node newTail()
+    // Creates a new node at the end of the list and returns it
+    private Node newTail(Node n)
     {
-        Node current = head;
-        while (current.right != null)
+        if (n.left != null && n.right != null)
         {
-            current = smaller(current);
+            // We aren't at the end of the list yet
+            return newTail(smaller(n));
         }
+
+        // We're at the end of the list, so create a new node
         Node newTail = new Node();
-        newTail.root = current;
+        newTail.root = n;
         newTail.size = 0;
         grow(newTail);
 
-        if (current.left == null)
+        // Assign it to the correct branch of n
+        if (n.left == null)
         {
-            current.left = newTail;
+            n.left = newTail;
         }
         else
         {
-            current.right = newTail;
+            n.right = newTail;
         }
-        return newTail;
 
+        return newTail;
     }
 
-    // Returns last inserted node
-    private Node findTail()
+    // Returns the most-recently inserted node
+    private Node findTail(Node n)
     {
-        Node current = head;
-        while (true)
+        if (n.left == null)
         {
-            if (current.left == null)
-            {
-                return current;
-            }
-            if (current.right == null)
-            {
-                return current.left;
-            }
-            current = smaller(current);
+            return n;
+        }
+        else if (n.right == null)
+        {
+            return n.left;
+        }
+        else
+        {
+            return findTail(smaller(n));
         }
     }
 
@@ -210,35 +235,9 @@ public class LinkedHeap<Item>
     private void exch(Node n, Node m)
     {
         Node temp = new Node();
-        if (head == n)
-        {
-            head = m;
-        }
-        else if (head == m)
-        {
-            head = n;
-        }
-        if (tail == n)
-        {
-            tail = m;
-        }
-        else if (tail == m)
-        {
-            tail = n;
-
-        }
-        temp.root = n.root;
-        temp.left = n.left;
-        temp.right = n.right;
-        temp.size = n.size;
-        n.root = m.root;
-        n.left = m.left;
-        n.right = m.right;
-        n.size = m.size;
-        m.root = temp.root;
-        m.left = temp.left;
-        m.right = temp.right;
-        m.size = temp.size;
+        temp.item = n.item;
+        n.item = m.item;
+        m.item = temp.item;
     }
 
     private boolean less(Node n, Node m)
