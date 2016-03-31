@@ -19,7 +19,8 @@ public class Quicksort
         testArrays(1000000);
     }
 
-    // This method runs a process to empirically test quicksort on different values of n and m
+    // This method runs a process to empirically test
+    // quicksort on different values of n and m
     public static void testArrays(int n)
     {
         // Data for testing runtime
@@ -38,7 +39,8 @@ public class Quicksort
             // We'll test each optimization 10 times
             for (int j = 0; j < 10; j++)
             {
-                // Create two arrays as a copy of the original unsorted list
+                // Create two arrays as a copy
+                // of the original unsorted list
                 double[] arr1 = new double[n];
                 double[] arr2 = new double[n];
                 for (int k = 0; k < unsorted.length; k++)
@@ -47,17 +49,20 @@ public class Quicksort
                     arr2[k] = unsorted[k];
                 }
 
-                // Use a stopwatch on nanoTime() to test runtimes for both pivot methods, use that to keep a running
-                // average runtime for both methods.
+                // Use a stopwatch on nanoTime() to test
+                // runtimes for both pivot methods
                 startTime = System.nanoTime();
                 sort(arr1, 0, n - 1, i, 1);
-                partition = (partition + System.nanoTime() - startTime) / (j + 1);
+                partition = (partition + System.nanoTime()
+                             - startTime) / (j + 1);
 
                 startTime = System.nanoTime();
                 sort(arr2, 0, n - 1, i, -1);
-                pivot = (pivot + System.nanoTime() - startTime) / (j + 1);
+                pivot = (pivot + System.nanoTime()
+                         - startTime) / (j + 1);
             }
-            System.out.println(n + "," + i + "," + partition + "," + pivot);
+            System.out.println(n + "," + i + "," +
+                               partition + "," + pivot);
         }
     }
 
@@ -105,8 +110,10 @@ public class Quicksort
         return j;
     }
 
-    // Recursive sort method with cutoff to insertion option and option for pivot vs partition
-    public static void sort(double[] a, int lo, int hi, int cutoff, int pivot)
+    // Recursive sort method with cutoff to insertion
+    // option and option for pivot vs partition
+    public static void sort(double[] a, int lo,
+                            int hi, int cutoff, int pivot)
     {
         if (lo >= hi)
         {
@@ -128,7 +135,8 @@ public class Quicksort
         }
     }
 
-    // Puts the median of lo, hi, and (hi+lo)/2 into the first index
+    // Puts the median of lo, hi, and
+    // (hi+lo)/2 into the first index
     public static void getPivot(double[] a, int lo, int hi)
     {
         if (a[lo] <= a[hi])
@@ -192,9 +200,14 @@ Testing quicksort optimizations.
 1000000,30,8102923,8322123
 
 
-See spreadsheet for data. I get a lot of statistical noise but a strong correlation between higher values of m
-bringing lower runtimes. The 3-way pivot selection doesn't seem to be an improvement - my guess is, since the
-data set is already a selection of random doubles, you're not likely to get really bad samples out of it, and
-thus the improvement on pivot selection isn't generally worth it (though there are a few cases where a
-substantial improvement is made).
+See spreadsheet for data. I get a lot of statistical
+noise but a strong correlation between higher values
+of m bringing lower runtimes. The 3-way pivot
+selection doesn't seem to be an improvement - my
+guess is, since the data set is already a selection
+of random doubles, you're not likely to get really
+bad samples out of it, and thus the improvement on
+pivot selection isn't generally worth it (though
+there are a few cases where a substantial
+improvement is made).
  */
