@@ -52,7 +52,8 @@ public class MaxHeap
         size = 0;
     }
 
-    // Adds an element to the end of the array, then swims it up. Resize() if necessary
+    // Adds an element to the end of the array, then swims it up.
+    // Resize() if necessary
     public void insert(int i)
     {
         if (++size == heap.length)
@@ -65,7 +66,8 @@ public class MaxHeap
 
     }
 
-    // Swaps the first and last elements, removes the last one, then sinks the first one
+    // Swaps the first and last elements, removes the last one,
+    // then sinks the first one
     public int remove()
     {
         exch(1, size);
@@ -84,7 +86,8 @@ public class MaxHeap
         return heap[a] < heap[b];
     }
 
-    // Returns the largest of the three elements in the heap - helps the sink() function a lot
+    // Returns the largest of the three elements in the heap
+    // helps the sink() function a lot
     private int greatest(int a, int b, int c)
     {
         if (heap[a] >= heap[b] && heap[a] >= heap[c])
@@ -132,7 +135,8 @@ public class MaxHeap
     private void resize()
     {
         int[] newHeap = new int[2 * size];
-        for (int i = 1; i <= size && i < heap.length && i < newHeap.length; i++)
+        for (int i = 1; i <= size && i < heap.length &&
+                        i < newHeap.length; i++)
         {
             newHeap[i] = heap[i];
         }

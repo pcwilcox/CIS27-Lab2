@@ -11,6 +11,7 @@ public class MaxHeap<Item extends Comparable>
     private ArrayList<Item> heap;
     private int             size;
 
+    // Sink the element when added
     private void sink(int i)
     {
         while (2 * i < size)
@@ -29,6 +30,7 @@ public class MaxHeap<Item extends Comparable>
         }
     }
 
+    //
     private void swim(int i)
     {
         while (i > 1 && less(i / 2, i))

@@ -21,7 +21,7 @@ public class Quicksort
 
     // This method runs a process to empirically test
     // quicksort on different values of n and m
-    public static void testArrays(int n)
+    private static void testArrays(int n)
     {
         // Data for testing runtime
         long partition;
@@ -137,7 +137,7 @@ public class Quicksort
 
     // Puts the median of lo, hi, and
     // (hi+lo)/2 into the first index
-    public static void getPivot(double[] a, int lo, int hi)
+    private static void getPivot(double[] a, int lo, int hi)
     {
         if (a[lo] <= a[hi])
         {

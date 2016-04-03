@@ -1,7 +1,5 @@
 package pq;
 
-import java.util.ArrayList;
-
 /**
  * Created by Pete Wilcox on 3/20/2016.
  * petercwilcox@gmail.com
@@ -60,7 +58,9 @@ public class MinHeap
 
     }
 
-    // Swap the first and last elements, remove the last, sink the first, resize if necessary
+    // Swap the first and last elements,
+    // remove the last, sink the first,
+    // resize if necessary
     public int remove()
     {
         exch(1, size);
@@ -110,7 +110,9 @@ public class MinHeap
     private void resize()
     {
         int[] newHeap = new int[2 * size];
-        for (int i = 1; i <= size && i < heap.length && i < newHeap.length; i++)
+        for (int i = 1; i <= size &&
+                        i < heap.length &&
+                        i < newHeap.length; i++)
         {
             newHeap[i] = heap[i];
         }

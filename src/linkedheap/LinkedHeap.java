@@ -32,7 +32,8 @@ public class LinkedHeap<Item>
             }
             else
             {
-                return this.toStringHelper() + ", " + left.toString() + ", " + right.toString();
+                return this.toStringHelper() + ", " + left.toString()
+                       + ", " + right.toString();
             }
         }
 
@@ -45,7 +46,8 @@ public class LinkedHeap<Item>
                 root = this.root.item.toString();
             }
 
-            output = "[Item: " + this.item.toString() + ", Size: " + this.size + ", Root: " + root + "]";
+            output = "[Item: " + this.item.toString() + ", Size: "
+                     + this.size + ", Root: " + root + "]";
             return output;
         }
 
@@ -59,6 +61,7 @@ public class LinkedHeap<Item>
             {
                 Comparable a = (Comparable) item;
                 Comparable b = (Comparable) other.item;
+                //noinspection unchecked
                 return a.compareTo(b);
             }
             else
@@ -147,6 +150,7 @@ public class LinkedHeap<Item>
         }
     }
 
+    // Decrease the size at each node on the way to the root
     private void shrink(Node n)
     {
         n.size--;
@@ -156,6 +160,7 @@ public class LinkedHeap<Item>
         }
     }
 
+    // Increase the size at each node on the way to the root
     private void grow(Node n)
     {
         n.size++;
@@ -210,6 +215,7 @@ public class LinkedHeap<Item>
         }
     }
 
+    // Find the smaller branch
     private Node smaller(Node n)
     {
         if (n.right == null)
@@ -223,6 +229,7 @@ public class LinkedHeap<Item>
         return n.left;
     }
 
+    // Find the larger element
     private Node greatest(Node n, Node m)
     {
         if (less(n, m))
